@@ -29,10 +29,10 @@ This script is provided "as is" for educational purposes to aid students who req
 You can run the script manually from PowerShell:
 
 ```bash
-PowerShell.exe -ExecutionPolicy Bypass -File "path	o\login_script.ps1"
+PowerShell.exe -ExecutionPolicy Bypass -File "path\to\login_script.ps1"
 ```
 
-Replace `"path	o\login_script.ps1"` with the actual path to your script.
+Replace `"path\to\login_script.ps1"` with the actual path to your script.
 
 #### At Startup
 
