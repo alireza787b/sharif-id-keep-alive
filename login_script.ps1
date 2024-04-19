@@ -30,6 +30,7 @@ This runs the script and checks the connection every 600 seconds (10 minutes).
 
 .AUTHOR
 Alireza Ghaderi
+https://www.linkedin.com/in/alireza787b/
 #>
 
 param(
