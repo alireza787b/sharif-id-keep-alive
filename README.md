@@ -10,7 +10,8 @@ This script is provided "as is" for educational purposes to aid students who req
 ## Features
 
 - Automatically logs into the Sharif University portal to maintain internet connectivity.
-- Customizable intervals for connection checks.
+- Customizable intervals for connection checks, with adaptive frequency adjustments approaching logout times.
+- The script adapts the checking frequency dynamically based on the approaching automatic logout time, increasing its frequency to ensure continuous connectivity.
 - Adaptable to other login systems with some modifications.
 
 ## Setup Instructions
@@ -20,7 +21,7 @@ This script is provided "as is" for educational purposes to aid students who req
 1. Clone the repository or download `login_script.ps1`.
 2. Open the script in a text editor.
 3. Replace `'yourUsername'` and `'yourPassword'` with your actual Sharif University credentials.
-4. Optionally, adjust the `checkIntervalSeconds` parameter to change the default check interval of 300 seconds (5 minutes).
+4. Optionally, adjust the `checkIntervalSeconds`, `fastCheckPrior`, `fastCheckPeriod`, and `maxSessionDuration` parameters to customize the check interval and adaptive check frequency behavior.
 
 ### Running the Script
 
