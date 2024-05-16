@@ -35,13 +35,15 @@ function test_and_login {
         loginUrl='https://net2.sharif.edu/login'
         username='yourUsername'  # Replace with your username
         password='yourPassword'  # Replace with your password
-        response=$(curl -s -X POST -d "username=$username&password=$password" "$loginUrl")
+        # Send POST request and save HTTP status code to a variable
+        httpResponse=$(curl -s -o /dev/null -w "%{http_code}" -X POST -d "username=$username&password=$password" "$loginUrl")
         
-        if [[ "$response" == *"some_success_indicator"* ]]; then
+        # Check if the HTTP response code is 200 (OK), which we'll assume means login was successful
+        if [ "$httpResponse" -eq 200 ]; then
             echo "$(date): Login attempt was successful."
             echo "$currentTime" > "$lastLoginFile"
         else
-            echo "$(date): Failed to login."
+            echo "$(date): Failed to login. Server responded with status: $httpResponse"
         fi
         sleepTime=$checkIntervalSeconds  # Reset sleepTime after a failed login attempt
     fi
