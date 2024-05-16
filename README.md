@@ -20,7 +20,7 @@ This script is provided "as is" for educational purposes to aid students who req
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/sharif-id-keep-alive.git
+   git clone https://github.com/alireza787b/sharif-id-keep-alive.git
    ```
 2. Navigate to the cloned directory:
    ```bash
