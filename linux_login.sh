@@ -12,6 +12,8 @@ currentTime=$(date +%s)
 
 # Function to check internet connectivity and log in
 function test_and_login {
+    local sleepTime=$checkIntervalSeconds  # Initialize sleepTime with default check interval
+
     if ping -c 1 1.1.1.1 >/dev/null 2>&1; then
         if [ ! -f "$lastLoginFile" ]; then
             echo "$currentTime" > "$lastLoginFile"
@@ -41,6 +43,7 @@ function test_and_login {
         else
             echo "$(date): Failed to login."
         fi
+        sleepTime=$checkIntervalSeconds  # Reset sleepTime after a failed login attempt
     fi
 
     echo "Next check in $sleepTime seconds."
