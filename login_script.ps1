@@ -73,18 +73,43 @@ function Test-And-Login {
         }
     } else {
         Write-Output "${currentTime}: Internet connection is down. Attempting to login..."
-        $loginUrl = 'https://net2.sharif.edu/login'
-        $username = 'yourUsername'  # Replace with your username
-        $password = 'yourPassword'  # Replace with your password
-        $form = @{
-            username = $username
-            password = $password
-        }
+        
+        $loginUrl = 'https://net.sharif.ir/en-us/user/login/'  # Updated Login URL
         $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+
         try {
-            $response = Invoke-WebRequest -Uri $loginUrl -Method Post -Body $form -SessionVariable session -ErrorAction Stop
-            $global:lastSuccessfulLogin = Get-Date
-            Write-Output "${global:lastSuccessfulLogin}: Login attempt was successful."
+            # Step 1: GET the login page to retrieve CSRF token and cookies
+            $loginPageResponse = Invoke-WebRequest -Uri $loginUrl -Method Get -WebSession $session -ErrorAction Stop
+
+            # Step 2: Parse the CSRF token from the login page
+            $csrfToken = ($loginPageResponse.Forms[0].Fields | Where-Object { $_.Name -eq "csrfmiddlewaretoken" }).Value
+
+            if (-not $csrfToken) {
+                throw "CSRF token not found on the login page."
+            }
+
+            # Step 3: Prepare the login form data
+            $username = 'yourUsername'  # Replace with your actual username
+            $password = 'yourPassword'  # Replace with your actual password
+
+            $formData = @{
+                csrfmiddlewaretoken = $csrfToken
+                username = $username
+                password = $password
+            }
+
+            # Step 4: Submit the login form
+            $loginResponse = Invoke-WebRequest -Uri $loginUrl -Method Post -Body $formData -WebSession $session -ErrorAction Stop
+
+            # Step 5: Verify if login was successful
+            # This can be done by checking the response URL or specific content that indicates a successful login
+            if ($loginResponse.StatusCode -eq 200 -and $loginResponse.BaseResponse.ResponseUri.AbsoluteUri -ne $loginUrl) {
+                $global:lastSuccessfulLogin = Get-Date
+                Write-Output "${global:lastSuccessfulLogin}: Login attempt was successful."
+            } else {
+                throw "Login failed: Unexpected response after login attempt."
+            }
+
         } catch {
             Write-Output "${currentTime}: Failed to login: $($_.Exception.Message)"
         }
